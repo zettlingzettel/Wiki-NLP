@@ -1,68 +1,59 @@
-This repository contains a Jupyter Notebook (wiki-nlp-work-in-progress.ipynb) demonstrating Natural Language Processing (NLP) techniques on a subset of the Wikipedia structured contents dataset.
+# Wikipedia NLP Work-in-Progress
 
-Dataset
-The dataset used is the Wikipedia structured contents dataset, available on Kaggle: https://www.kaggle.com/datasets/wikimedia-foundation/wikipedia-structured-contents/data.
+This repository contains a Jupyter Notebook, `wiki-nlp-work-in-progress.ipynb`, demonstrating Natural Language Processing (NLP) techniques applied to a subset of the Wikipedia Structured Contents Dataset.
 
-Notebook Contents
-The notebook performs the following steps:
+---
 
-Download and Load Data: Downloads a portion of the Wikipedia structured contents dataset using kagglehub and loads it into a Pandas DataFrame.
+## 📚 Dataset
 
-Data Conversion and Saving: Converts the DataFrame to a Parquet file for efficient storage and then to a JSON string, which is saved as both a .json and a .csv file (the .csv file contains the JSON string).
+The dataset used is the Wikipedia Structured Contents Dataset, available on Kaggle.
 
-Data Preparation for NLP:
+---
 
-Loads the JSON data into a Python dictionary and flattens it into a list of dictionaries with 'Source' and 'Target' keys.
+## 🧪 Notebook Overview
 
-Creates a DataFrame from the flattened data.
+The notebook demonstrates a workflow involving data ingestion, cleaning, tokenization, and bigram analysis. The steps are as follows:
 
-Splits the DataFrame into training data.
+### 1. Download and Load Data
+- Downloads a portion of the dataset using `kagglehub`.
+- Loads the data into a Pandas DataFrame.
 
-Filters for rows where 'Source' is 'sections' and extracts text from the nested 'has_parts' structure within the 'Target' column.
+### 2. Data Conversion and Storage
+- Converts the DataFrame into a `.parquet` file for efficient storage.
+- Serializes the dataset to a JSON string.
+- Saves the JSON string as both `.json` and `.csv` (the CSV contains the JSON string in a single column).
 
-Saves the extracted text into an out.csv file.
+### 3. Data Preparation for NLP
+- Loads the JSON into a Python dictionary.
+- Flattens the structure into a list of dictionaries with `'Source'` and `'Target'` keys.
+- Creates a DataFrame from this list.
+- Filters rows where `'Source' == 'sections'`.
+- Extracts section text from the nested `has_parts` structure in the `'Target'` column.
+- Saves the extracted text to `out.csv`.
 
-Text Cleaning and Tokenization:
+### 4. Text Cleaning and Tokenization
+- Defines a `clean_text()` function that:
+  - Converts text to lowercase.
+  - Removes extra whitespace, special characters, and numbers.
+- Downloads NLP resources:
+  - NLTK: `punkt`, `stopwords`
+  - spaCy: `en_core_web_lg`
+- Reads `out.csv`.
+- Merges all character columns into a single `Extracted_Text` column.
+- Samples 10,000 rows.
+- Applies `clean_text()` to generate a `Cleaned_Extracted_Text` column.
+- Tokenizes and removes stopwords, storing the results in a `Tokens` column.
 
-Defines a clean_text function to preprocess text by converting to lowercase, removing extra whitespace, special characters, and numbers.
+### 5. N-gram and Frequency Analysis
+- Identifies and prints:
+  - Top 10 and top 500 bigrams by raw frequency.
+  - 100 most common individual words.
+  - Bigrams where at least one word is in the top 100 words list.
+- Calculates bigram scores using:
+  - **Pointwise Mutual Information (PMI)**
+  - **Likelihood Ratio**
 
-Downloads NLTK 'punkt' and 'stopwords' and Spacy 'en_core_web_lg' for text processing.
+---
 
-Reads the out.csv file.
 
-Combines all character columns into a single 'Extracted_Text' column.
 
-Samples 10,000 rows from the dataset.
-
-Applies the clean_text function to create a 'Cleaned_Extracted_Text' column.
-
-Tokenizes the cleaned text and removes stopwords, storing the result in a 'Tokens' column.
-
-N-gram Analysis:
-
-Identifies and prints the top 10 and top 500 bigrams based on raw frequency.
-
-Calculates and prints the most common 100 words.
-
-Filters and prints bigrams where at least one word is among the 100 most common words.
-
-Calculates and prints all bigrams scored by Pointwise Mutual Information (PMI) and Likelihood Ratio.
-
-Dependencies
-The notebook requires the following Python libraries:
-
-kagglehub
-
-tqdm
-
-scikit-learn
-
-pandas
-
-json
-
-csv
-
-nltk
-
-spacy
